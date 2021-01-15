@@ -5,6 +5,7 @@
 namespace {
 
 TEST(TestTest, Test_Test) {
+	krystal::core::ServiceManager m;
 
 }
 

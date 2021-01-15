@@ -9,7 +9,9 @@ namespace krystal::core {
 
 class ServiceManager {
 public:
-    void registerService(std::shared_ptr<Service> service) {
+	ServiceManager();
+
+	void registerService(std::shared_ptr<Service> service) {
     }
 
 private:
