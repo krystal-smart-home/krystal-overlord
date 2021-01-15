@@ -1,7 +1,7 @@
 #!/bin/sh
 
 if ! [ -d ./cov_build ]; then
-	echo "~ cov_build directory doesn't exists"
+	echo "~ cov_build directory doesn't exist"
 	exit 1
 fi
 
