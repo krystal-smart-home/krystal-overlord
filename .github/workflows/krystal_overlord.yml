@@ -1,0 +1,21 @@
+name: Starlight unit test runner
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        compiler: [gcc-10]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install dependencies
+        run: |
+          ./bin/install_deps.sh
+      - name: Pull submodules
+        run: git submodule update --init --recursive
+      - name: Build
+        run: ./bin/build.sh
+      - name: Run tests
+        run: cd ./build && make test

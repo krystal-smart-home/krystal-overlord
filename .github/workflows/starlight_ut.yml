@@ -1,0 +1,24 @@
+name: krystal-overlord per push pipeline
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        compiler: [gcc-10]
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set scripts permissions
+        run: |
+          chmod +x ./bin/*.sh
+      - name: Install dependencies
+        run: |
+          ./bin/deps.sh
+      - name: Pull submodules
+        run: git submodule update --init --recursive
+      - name: Build
+        run: |
+          mkdir -p build && cd build && cmake .. && make -j16 && cd ..
+      - name: Run unit tests
+          cd build && make test
