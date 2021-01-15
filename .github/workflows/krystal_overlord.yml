@@ -21,6 +21,9 @@ jobs:
       - name: Build
         run: |
           mkdir build && pushd build && cmake .. && make -j16 && popd
+        env:
+          CC: /usr/bin/gcc-10
+          CCX: /usr/bin/g++-10
       - name: Run unit tests
         run: |
           pushd build && make test && popd
