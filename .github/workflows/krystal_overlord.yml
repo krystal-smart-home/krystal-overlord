@@ -1,4 +1,4 @@
-name: Starlight unit test runner
+name: krystal-overlord per push pipeline
 
 on: [push]
 
@@ -10,12 +10,17 @@ jobs:
         compiler: [gcc-10]
     steps:
       - uses: actions/checkout@v2
+      - name: Set scripts permissions
+        run: |
+          chmod +x ./bin/*
       - name: Install dependencies
         run: |
-          ./bin/install_deps.sh
+          ./bin/deps.sh
       - name: Pull submodules
         run: git submodule update --init --recursive
       - name: Build
-        run: ./bin/build.sh
-      - name: Run tests
-        run: cd ./build && make test
+        run: |
+          mkdir build && pushd build && cmake .. && make -j16 && popd
+      - name: Run unit tests
+        run: |
+          pushd build && make test && popd
