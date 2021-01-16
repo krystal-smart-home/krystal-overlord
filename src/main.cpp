@@ -1,11 +1,15 @@
 #include <iostream>
 
-#include "core/ServiceManager.h"
+#include "core/Logger.h"
+#include "core/ServiceManager.hpp"
+
+using namespace krystal;
 
 int main() {
-	
-	krystal::core::ServiceManager m;
+    core::initLogging();
+    KRYSTAL_INFO("Logger set up");
 
-	std::cout << "hello world\n";
-	return 0;
+    krystal::core::ServiceManager serviceManager;
+
+    return 0;
 }
