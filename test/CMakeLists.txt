@@ -7,6 +7,7 @@ include(GoogleTest)
 function(f_add_test bin files)
 	add_executable(${bin} ${files})
 	target_link_libraries(${bin} PUBLIC ${PROJECT_NAME}_lib ${GTEST_LINK})
+	target_include_directories(${bin} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 	gtest_add_tests(TARGET ${bin})
 endfunction()
 

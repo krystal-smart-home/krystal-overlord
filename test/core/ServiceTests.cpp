@@ -2,6 +2,8 @@
 
 #include "core/Service.h"
 
+#include "mocks/ServiceMock.hpp"
+
 using namespace krystal::core;
 
 namespace {
@@ -9,16 +11,8 @@ namespace {
 TEST(ServiceTests, givenService_whenGettingName_shouldReturnProperName) {
     static const std::string name = "testService";
 
-    struct TestService : Service {
-        TestService()
-            : Service(name) {}
+    ServiceMock service(name);
 
-        void start() override {}
-        void stop() override {}
-        void update(std::atomic_bool& isRunning) override {}
-    };
-
-    TestService testService;
-    EXPECT_EQ(testService.getName(), name);
+    EXPECT_EQ(service.getName(), name);
 }
 }
