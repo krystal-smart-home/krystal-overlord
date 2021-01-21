@@ -12,6 +12,8 @@ function(f_add_test bin files)
 endfunction()
 
 file (GLOB_RECURSE SL_TEST_CORE_SRC ${CMAKE_CURRENT_SOURCE_DIR}/core/*.cpp)
+file (GLOB_RECURSE SL_TEST_SUPERVISOR_SRC ${CMAKE_CURRENT_SOURCE_DIR}/supervisor/*.cpp)
 
 f_add_test(core_tests "${SL_TEST_CORE_SRC}")
+f_add_test(supervisor_tests "${SL_TEST_SUPERVISOR_SRC}")
 
