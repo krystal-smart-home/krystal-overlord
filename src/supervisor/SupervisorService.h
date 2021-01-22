@@ -15,41 +15,17 @@ namespace krystal::supervisor {
 
 class SupervisorService : public core::Service {
 public:
-    explicit SupervisorService()
-        : core::Service("SupervisorService") {
-    }
+    explicit SupervisorService();
 
-    core::ServiceState update(const xvent::EventProvider& eventProvider) override {
-        auto events = eventProvider.getAll();
+    core::ServiceState update(const xvent::EventProvider& eventProvider) override;
 
-		KRYSTAL_INFO("Received {} events", events.size());
-        for (auto& event : events) {
-			KRYSTAL_INFO("Handling event");
-			event->on<event::NewControllerConnected>(BIND_CALLBACK(onNewControllerConnected));
-            event->on<event::NewDeviceConnected>(BIND_CALLBACK(onNewDeviceConnected));
-        }
-
-        return core::ServiceState::active;
-    }
-
-    void start() override {
-    }
-
-    void stop() override {
-    }
+    void start() override;
+    void stop() override;
 
 private:
-    void onNewControllerConnected(std::shared_ptr<event::NewControllerConnected> event) {
-        auto controller = std::make_shared<device::Controller>(event->name);
-        auto id = controller->getId();
-        m_controllers[id] = controller;
-
-        event->setResult<event::NewControllerRegistered>(id);
-    }
-
-    void onNewDeviceConnected(std::shared_ptr<event::NewDeviceConnected> event) {
-        event->setResult<event::NewDeviceRegistered>();
-    }
+    void onGetControllers(std::shared_ptr<event::GetControllers> event);
+    void onNewControllerConnected(std::shared_ptr<event::NewControllerConnected> event);
+    void onNewDeviceConnected(std::shared_ptr<event::NewDeviceConnected> event);
 
     std::unordered_map<int, std::shared_ptr<device::Controller>> m_controllers;
 };

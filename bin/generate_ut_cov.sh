@@ -24,6 +24,7 @@ find . -iname "*.gcda" | grep -v "\./src" | xargs rm -f
 
 ./lcov/bin/lcov --rc geninfo_gcov_tool=/usr/bin/gcov-10 --capture --directory ./src --output test_cov.info
 ./lcov/bin/lcov --rc geninfo_gcov_tool=/usr/bin/gcov-10 -a init_cov.info -a test_cov.info -o cov.info
+./lcov/bin/lcov --rc geninfo_gcov_tool=/usr/bin/gcov-10 --remove cov.info -o cov.info '/usr/include/*' '*3rdparty*' 
 
 ./lcov/bin/genhtml cov.info --output-directory ../cov/overlord-ut-coverage
 

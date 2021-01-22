@@ -25,6 +25,10 @@ public:
         return m_model.name;
     }
 
+	ControllerModel getModel() const {
+		return m_model;
+	}
+
 private:
     ControllerModel m_model;
 

@@ -3,6 +3,7 @@
 #include "core/Logger.h"
 #include "core/ServiceManager.hpp"
 #include "supervisor/SupervisorService.h"
+#include "transmission/TransmissionService.h"
 
 using namespace krystal;
 
@@ -12,12 +13,13 @@ int main() {
 
     krystal::core::ServiceManager serviceManager;
 
-	auto supervisorService = std::make_shared<supervisor::SupervisorService>();
+    auto supervisorService = std::make_shared<supervisor::SupervisorService>();
+    auto transmissionService = std::make_shared<transmission::TransmissionService>();
 
-	serviceManager.registerService(supervisorService);
+    serviceManager.registerService(supervisorService);
+    serviceManager.registerService(transmissionService);
 
-
-	serviceManager.start();
+    serviceManager.start();
 
     return 0;
 }

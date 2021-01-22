@@ -2,6 +2,8 @@
 
 #include <xvent/Event.h>
 
+#include "device/ControllerModel.h"
+
 namespace krystal::event {
 
 struct NewControllerConnected : xvent::EventBase<NewControllerConnected> {
@@ -18,6 +20,16 @@ struct NewControllerRegistered : xvent::EventBase<NewControllerRegistered> {
     }
 
     int controllerId;
+};
+
+struct GetControllers : xvent::EventBase<GetControllers> {};
+
+struct Controllers : xvent::EventBase<Controllers> {
+    explicit Controllers(std::vector<device::ControllerModel> controllers)
+        : controllers(controllers) {
+    }
+
+    std::vector<device::ControllerModel> controllers;
 };
 
 struct NewDeviceConnected : xvent::EventBase<NewDeviceConnected> {
