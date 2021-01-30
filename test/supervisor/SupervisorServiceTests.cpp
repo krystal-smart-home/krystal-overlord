@@ -26,12 +26,12 @@ public:
 
 TEST_F(SupervisorServiceTests, givenControllerConnected_whenProcessingBySupervisorService_shouldResponseWithId) {
     const std::string controllerName = "name";
-    auto result = m_eventProviderWrapper.pushEvent<event::NewControllerConnected>(controllerName);
+    auto result = m_eventProviderWrapper.pushEvent<event::device::NewController::Request>(controllerName);
 
     m_supervisorService.update(m_eventProviderWrapper.get());
 
-	auto res = result.wait();
-	ASSERT_TRUE(res->is<event::NewControllerRegistered>());
-	ASSERT_EQ(res->as<event::NewControllerRegistered>()->controllerId, 0);
+    auto res = result.wait();
+    ASSERT_TRUE(res->is<event::device::NewController::Response>());
+    ASSERT_EQ(res->as<event::device::NewController::Response>()->controllerId, 0);
 }
 }

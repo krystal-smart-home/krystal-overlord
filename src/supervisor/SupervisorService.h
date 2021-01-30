@@ -7,11 +7,13 @@
 #include "core/Service.h"
 #include "device/Controller.h"
 #include "device/Device.h"
-#include "event/DeviceEvents.h"
+
+#include "event/api/GetControllers.h"
+#include "event/device/NewController.h"
+#include "event/device/NewDevice.h"
+
 
 namespace krystal::supervisor {
-
-#define BIND_CALLBACK(function) std::bind(&SupervisorService::function, this, std::placeholders::_1)
 
 class SupervisorService : public core::Service {
 public:
@@ -23,9 +25,9 @@ public:
     void stop() override;
 
 private:
-    void onGetControllers(std::shared_ptr<event::GetControllers> event);
-    void onNewControllerConnected(std::shared_ptr<event::NewControllerConnected> event);
-    void onNewDeviceConnected(std::shared_ptr<event::NewDeviceConnected> event);
+    void onGetControllers(std::shared_ptr<event::api::GetControllers::Request> event);
+    void onNewController(std::shared_ptr<event::device::NewController::Request> event);
+    void onNewDevice(std::shared_ptr<event::device::NewDevice::Request> event);
 
     std::unordered_map<int, std::shared_ptr<device::Controller>> m_controllers;
 };

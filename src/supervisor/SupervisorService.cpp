@@ -15,9 +15,10 @@ core::ServiceState SupervisorService::update(const xvent::EventProvider& eventPr
     for (auto& event : events) {
         KRYSTAL_INFO("Handling event");
 
-        event->on<event::NewControllerConnected>(BIND_CALLBACK(onNewControllerConnected));
-        event->on<event::NewDeviceConnected>(BIND_CALLBACK(onNewDeviceConnected));
-        event->on<event::GetControllers>(BIND_CALLBACK(onGetControllers));
+        event->on<event::device::NewController::Request>(BIND_CALLBACK(onNewController));
+        event->on<event::device::NewDevice::Request>(BIND_CALLBACK(onNewDevice));
+        
+		event->on<event::api::GetControllers::Request>(BIND_CALLBACK(onGetControllers));
     }
 
     return core::ServiceState::active;
@@ -29,23 +30,23 @@ void SupervisorService::start() {
 void SupervisorService::stop() {
 }
 
-void SupervisorService::onGetControllers(std::shared_ptr<event::GetControllers> event) {
+void SupervisorService::onGetControllers(std::shared_ptr<event::api::GetControllers::Request> event) {
     std::vector<device::ControllerModel> controllers;
     for (auto& [_, controller] : m_controllers)
         controllers.emplace_back(controller->getModel());
 
-    event->setResult<event::Controllers>(controllers);
+    event->setResult<event::api::GetControllers::Response>(controllers);
 }
 
-void SupervisorService::onNewControllerConnected(std::shared_ptr<event::NewControllerConnected> event) {
+void SupervisorService::onNewController(std::shared_ptr<event::device::NewController::Request> event) {
     auto controller = std::make_shared<device::Controller>(event->name);
     auto id = controller->getId();
     m_controllers[id] = controller;
 
-    event->setResult<event::NewControllerRegistered>(id);
+    event->setResult<event::device::NewController::Response>(id);
 }
 
-void SupervisorService::onNewDeviceConnected(std::shared_ptr<event::NewDeviceConnected> event) {
-    event->setResult<event::NewDeviceRegistered>();
+void SupervisorService::onNewDevice(std::shared_ptr<event::device::NewDevice::Request> event) {
+    event->setResult<event::device::NewDevice::Response>();
 }
 }
