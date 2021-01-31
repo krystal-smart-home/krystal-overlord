@@ -8,6 +8,8 @@ function(f_add_test bin files)
 	add_executable(${bin} ${files})
 	target_link_libraries(${bin} PUBLIC ${PROJECT_NAME}_lib ${GTEST_LINK})
 	target_include_directories(${bin} PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+	set_target_properties(${bin} PROPERTIES CMAKE_CXX_STANDARD 20)
+
 	gtest_add_tests(TARGET ${bin})
 endfunction()
 

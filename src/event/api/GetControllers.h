@@ -2,6 +2,8 @@
 
 #include "event/Misc.hpp"
 
+#include "device/ControllerModel.h"
+
 namespace krystal::event::api {
 
 struct GetControllers {

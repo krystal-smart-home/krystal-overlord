@@ -11,7 +11,7 @@ SupervisorService::SupervisorService()
 core::ServiceState SupervisorService::update(const xvent::EventProvider& eventProvider) {
     auto events = eventProvider.getAll();
 
-    KRYSTAL_INFO("Received {} events", events.size());
+    // KRYSTAL_INFO("Received {} events", events.size());
     for (auto& event : events) {
         KRYSTAL_INFO("Handling event");
 
