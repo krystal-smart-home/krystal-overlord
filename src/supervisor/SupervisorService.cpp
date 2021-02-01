@@ -15,10 +15,12 @@ core::ServiceState SupervisorService::update(const xvent::EventProvider& eventPr
     for (auto& event : events) {
         KRYSTAL_INFO("Handling event");
 
+        // device
         event->on<event::device::NewController::Request>(BIND_CALLBACK(onNewController));
         event->on<event::device::NewDevice::Request>(BIND_CALLBACK(onNewDevice));
-        
-		event->on<event::api::GetControllers::Request>(BIND_CALLBACK(onGetControllers));
+
+        // api
+        event->on<event::api::GetControllers::Request>(BIND_CALLBACK(onGetControllers));
     }
 
     return core::ServiceState::active;
