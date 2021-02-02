@@ -2,7 +2,7 @@
 
 #include "event/Misc.hpp"
 
-#include "device/ControllerModel.h"
+#include "device/ControllerDescription.h"
 
 namespace krystal::event::api {
 
@@ -10,11 +10,11 @@ struct GetControllers {
     DECLARE_EVENT(Request){};
 
     DECLARE_EVENT(Response) {
-        explicit Response(std::vector<device::ControllerModel> controllers)
+        explicit Response(std::vector<device::ControllerDescription> controllers)
             : controllers(controllers) {
         }
 
-        std::vector<device::ControllerModel> controllers;
+        std::vector<device::ControllerDescription> controllers;
     };
 };
 }

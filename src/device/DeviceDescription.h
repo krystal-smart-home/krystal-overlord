@@ -9,7 +9,7 @@ enum class DeviceType {
     state
 };
 
-struct DeviceModel {
+struct DeviceDescription {
     int id;
     std::string name;
     DeviceType type;

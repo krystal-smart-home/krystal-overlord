@@ -1,8 +1,10 @@
 #pragma once
 
+#include <string>
+
 namespace krystal::device {
 
-struct ControllerModel {
+struct ControllerDescription {
     std::string name;
     int id;
 };

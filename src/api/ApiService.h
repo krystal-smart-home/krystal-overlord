@@ -15,7 +15,7 @@ public:
 
     core::ServiceState update(const xvent::EventProvider& eventProvider) override;
 
-	void start() override;
+    void start() override;
     void stop() override;
 
 private:
@@ -23,6 +23,6 @@ private:
 
     std::shared_ptr<controllers::ControllersController> m_controllersController;
 
-    routes::ControllerRoutes m_controllerRoutes;
+    std::shared_ptr<routes::ControllerRoutes> m_controllerRoutes;
 };
 }

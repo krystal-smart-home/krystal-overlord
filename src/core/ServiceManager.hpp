@@ -65,9 +65,10 @@ public:
 private:
     void threadWorker(std::shared_ptr<Service> service) {
         while (true) {
-            auto state = service->update(m_eventEngine.getEventProvider(service->getName()));
+            auto serviceName = service->getName();
+            auto eventProvider = m_eventEngine.getEventProvider(serviceName);
 
-            if (state != ServiceState::active)
+            if (auto state = service->update(eventProvider); state != ServiceState::active)
                 break;
         }
     }

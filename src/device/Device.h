@@ -1,6 +1,6 @@
 #pragma once
 
-#include "DeviceModel.h"
+#include "DeviceDescription.h"
 
 namespace krystal::device {
 

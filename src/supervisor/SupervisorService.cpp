@@ -33,7 +33,7 @@ void SupervisorService::stop() {
 }
 
 void SupervisorService::onGetControllers(std::shared_ptr<event::api::GetControllers::Request> event) {
-    std::vector<device::ControllerModel> controllers;
+    std::vector<device::ControllerDescription> controllers;
     for (auto& [_, controller] : m_controllers)
         controllers.emplace_back(controller->getModel());
 

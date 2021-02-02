@@ -3,7 +3,7 @@
 #include <queue>
 #include <string>
 
-#include "ControllerModel.h"
+#include "ControllerDescription.h"
 
 namespace krystal::device {
 
@@ -25,12 +25,12 @@ public:
         return m_model.name;
     }
 
-	ControllerModel getModel() const {
+	ControllerDescription getModel() const {
 		return m_model;
 	}
 
 private:
-    ControllerModel m_model;
+    ControllerDescription m_model;
 
     static int generateId() {
         static int lastFreeId = 0;
