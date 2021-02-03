@@ -6,6 +6,7 @@
 #include <pistache/router.h>
 
 #include "Routes.h"
+#include "api/RouterWrapper.h"
 #include "api/controllers/ControllersController.h"
 
 using Pistache::Http::ResponseWriter;
@@ -24,9 +25,9 @@ public:
         : m_controllersController(controller) {
     }
 
-    void setup(const std::string& version, Pistache::Rest::Router& router) {
-        get(router, version + "/controller", bindSafe(&ControllerRoutes::controllerGet, this));
-        get(router, version + "/controller/:id", bindSafe(&ControllerRoutes::controllerIdGet, this));
+    void setup(const std::string& version, RouterWrapper& router) {
+        router.get(version + "/controller", router.bindSafe(&ControllerRoutes::controllerGet, this));
+        router.get(version + "/controller/:id", router.bindSafe(&ControllerRoutes::controllerIdGet, this));
     }
 
 private:
@@ -35,7 +36,7 @@ private:
     }
 
     void controllerIdGet(const Request& req, ResponseWriter& res) {
-		res.send(Http::Code::Ok, "Hello world");
+        res.send(Http::Code::Ok, "Hello world");
     }
 
     std::shared_ptr<ControllersController> m_controllersController;

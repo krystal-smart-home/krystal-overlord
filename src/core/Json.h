@@ -2,7 +2,11 @@
 
 #include <sstream>
 
+#include <jsoncpp/json/json.h>
+
 namespace krystal::core {
+
+Json::Value parseJson(const std::string&);
 
 class JsonBuilder {
 public:

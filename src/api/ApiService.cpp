@@ -1,5 +1,7 @@
 #include "ApiService.h"
 
+#include "RouterWrapper.h"
+
 namespace krystal::api {
 
 ApiService::ApiService()
@@ -11,11 +13,10 @@ core::ServiceState ApiService::update(const xvent::EventProvider& eventProvider)
 }
 
 void ApiService::start() {
-	m_controllersController = std::make_shared<controllers::ControllersController>(m_eventEmitter->clone());
-	m_controllerRoutes = std::make_shared<routes::ControllerRoutes>(m_controllersController);
+    m_controllersController = std::make_shared<controllers::ControllersController>(m_eventEmitter->clone());
+    m_controllerRoutes = std::make_shared<routes::ControllerRoutes>(m_controllersController);
 
-
-	auto& router = m_webServer.getRouter();
+    RouterWrapper router(m_webServer.getRouter());
     const std::string version = "/v1";
 
     m_controllerRoutes->setup(version, router);

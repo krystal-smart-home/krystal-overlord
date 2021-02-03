@@ -1,10 +1,22 @@
 #include "Json.h"
 
-#include <sstream>
+#include <memory>
 
-#include <jsoncpp/json/json.h>
+#include "core/Error.h"
 
 namespace krystal::core {
+
+Json::Value parseJson(const std::string& jsonString) {
+    Json::Value root;
+    Json::CharReaderBuilder builder;
+    JSONCPP_STRING errors;
+
+    const char* p = jsonString.c_str();
+    auto reader = std::unique_ptr<Json::CharReader>(builder.newCharReader());
+    if (!reader->parse(p, p + jsonString.size(), &root, &errors))
+        throw JsonError(ErrorCode::noSpecified);
+    return root;
+}
 
 JsonBuilder::JsonBuilder() {
     reset();

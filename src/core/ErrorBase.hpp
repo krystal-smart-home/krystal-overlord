@@ -1,6 +1,7 @@
 #pragma once
 
 #include <exception>
+#include <typeindex>
 
 #include "ErrorCode.h"
 
@@ -57,6 +58,7 @@ private:
     std::string m_details;
 
     virtual std::type_index getType() const = 0;
+};
 }
 
 #define KRYSTAL_DEFINE_SUB_ERROR(ClassName, BaseError) \
@@ -74,4 +76,4 @@ private:
         }                                              \
     };
 
-#define KRYSTAL_DEFINE_ERROR(ClassName) KRYSTAL_DEFINE_SUB_ERROR(ClassName, Error)
+#define KRYSTAL_DEFINE_ERROR(ClassName) KRYSTAL_DEFINE_SUB_ERROR(ClassName, ErrorBase)
