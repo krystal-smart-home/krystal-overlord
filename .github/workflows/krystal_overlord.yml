@@ -39,8 +39,7 @@ jobs:
       - name: Generate unit tests coverage
         run: |
           ./bin/generate_ut_cov.sh
-      - name: Archive code coverage results
-        uses: actions/upload-artifact@v2
+      - name: Send raport to Codecov
+        uses: codecov/codecov-action@v1
         with:
-          name: overlord-ut-coverage
-          path: ./cov
+          files: ./coverage.xml
