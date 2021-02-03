@@ -3,6 +3,7 @@
 namespace krystal::core {
 
 enum class ErrorCode {
-    noSpecified
+    noSpecified,
+    invalidJsonString,
 };
 }

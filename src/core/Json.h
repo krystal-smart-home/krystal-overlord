@@ -1,8 +1,9 @@
 #pragma once
 
+#include <jsoncpp/json/json.h>
 #include <sstream>
 
-#include <jsoncpp/json/json.h>
+using namespace std::literals::string_literals;
 
 namespace krystal::core {
 
@@ -12,24 +13,44 @@ class JsonBuilder {
 public:
     explicit JsonBuilder();
 
-    std::string build();
+    std::string asString();
     JsonBuilder& beginObject();
     JsonBuilder& beginObject(const std::string& name);
     JsonBuilder& endObject();
     JsonBuilder& beginArray(const std::string& name);
     JsonBuilder& endArray();
 
+    JsonBuilder& addField(const std::string& value) {
+        return addFieldImpl('"' + std::string(value) + '"');
+    }
+
+    JsonBuilder& addField(const std::string& key, const std::string& value) {
+        return addFieldImpl(key, '"' + std::string(value) + '"');
+    }
+
     template <typename T>
-    JsonBuilder& addItem(const T& item) {
+    JsonBuilder& addField(const T& item) {
+        return addFieldImpl(item);
+    }
+
+    template <typename T>
+    JsonBuilder& addField(const std::string& key, const T& value) {
+        return addFieldImpl(key, value);
+    }
+
+private:
+    template <typename T>
+    JsonBuilder& addFieldImpl(const T& value) {
         if (m_shouldInsertComma)
             m_jsonStream << ',';
-        m_jsonStream << item;
+
+        m_jsonStream << value;
         m_shouldInsertComma = true;
         return *this;
     }
 
     template <typename T>
-    JsonBuilder& addItem(const std::string& key, const T& value) {
+    JsonBuilder& addFieldImpl(const std::string& key, const T& value) {
         if (m_shouldInsertComma)
             m_jsonStream << ',';
         m_jsonStream << '"' << key << "\": " << value;
@@ -37,7 +58,6 @@ public:
         return *this;
     }
 
-private:
     void reset();
 
     std::stringstream m_jsonStream;
