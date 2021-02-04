@@ -76,6 +76,30 @@ TEST_F(JsonTests, givenJsonBuilder_whenAddingStringValue_shouldGiveCorrectResult
     EXPECT_EQ(val.asFloat(), 5.0f);
 }
 
+TEST_F(JsonTests, givenJsonBuilder_whenCreatingArrayOfObjects_shouldGiveCorrectResult) {
+    auto jsonString = jsonBuilder.beginArray("arr").beginObject().endObject().beginObject().endObject().endArray().asString();
+    auto json = parseJson(jsonString);
+
+    ASSERT_TRUE(json.isMember("arr"));
+
+    auto val = json["arr"];
+    ASSERT_TRUE(val.isArray());
+    EXPECT_TRUE(val[0].isObject());
+    EXPECT_TRUE(val[1].isObject());
+}
+
+TEST_F(JsonTests, givenJsonBuilder_whenCreatingArrayOfArrays_shouldGiveCorrectResult) {
+    auto jsonString = jsonBuilder.beginArray("arr").beginArray().endArray().beginArray().endArray().endArray().asString();
+    auto json = parseJson(jsonString);
+
+    ASSERT_TRUE(json.isMember("arr"));
+
+    auto val = json["arr"];
+    ASSERT_TRUE(val.isArray());
+    EXPECT_TRUE(val[0].isArray());
+    EXPECT_TRUE(val[1].isArray());
+}
+
 TEST_F(JsonTests, givenJsonBuilder_whenAddingFloatValue_shouldGiveCorrectResult) {
     auto jsonString = jsonBuilder.addField("myStr", "str"s).asString();
     auto json = parseJson(jsonString);
@@ -89,9 +113,9 @@ TEST_F(JsonTests, givenJsonBuilder_whenAddingFloatValue_shouldGiveCorrectResult)
     EXPECT_EQ(val.asString(), "str");
 }
 
-TEST_F(JsonTests, giveJsonBuilder_whenCreatingComplexObject_shouldGiveCorrectResult) {
+TEST_F(JsonTests, givenJsonBuilder_whenCreatingComplexObject_shouldGiveCorrectResult) {
     auto jsonString =
-        jsonBuilder.addField("1", 1).addField("2", 2).beginObject("nested").beginArray("arr").endArray().endObject().asString();
+        jsonBuilder.addField("1", 1).addField("2", 2).beginArray("arr0").endArray().beginObject("nested").beginArray("arr").endArray().endObject().asString();
     auto json = parseJson(jsonString);
 
     ASSERT_TRUE(json.isMember("1"));
@@ -100,10 +124,37 @@ TEST_F(JsonTests, giveJsonBuilder_whenCreatingComplexObject_shouldGiveCorrectRes
     ASSERT_TRUE(json.isMember("2"));
     ASSERT_EQ(json["2"], 2);
 
+    ASSERT_TRUE(json.isMember("arr0"));
+    ASSERT_TRUE(json["arr0"].isArray());
+
     ASSERT_TRUE(json.isMember("nested"));
     auto n = json["nested"];
 
     ASSERT_TRUE(n.isMember("arr"));
     ASSERT_TRUE(n["arr"].isArray());
+}
+
+TEST_F(JsonTests, givenJsonBuilder_whenCreatingArrayWithStrElements_shouldGiveCorrectResults) {
+    auto jsonString = jsonBuilder.beginArray("arr").addField("a"s).addField("b"s).endArray().asString();
+    auto json = parseJson(jsonString);
+
+    ASSERT_TRUE(json.isMember("arr"));
+    auto& arr = json["arr"];
+
+    ASSERT_EQ(arr.size(), 2);
+    ASSERT_EQ(arr[0], "a"s);
+    ASSERT_EQ(arr[1], "b"s);
+}
+
+TEST_F(JsonTests, givenJsonBuilder_whenCreatingArrayWithIntElements_shouldGiveCorrectResults) {
+    auto jsonString = jsonBuilder.beginArray("arr").addField(1).addField(2).endArray().asString();
+    auto json = parseJson(jsonString);
+
+    ASSERT_TRUE(json.isMember("arr"));
+    auto& arr = json["arr"];
+
+    ASSERT_EQ(arr.size(), 2);
+    ASSERT_EQ(arr[0], 1);
+    ASSERT_EQ(arr[1], 2);
 }
 }

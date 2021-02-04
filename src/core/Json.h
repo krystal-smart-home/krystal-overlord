@@ -17,15 +17,16 @@ public:
     JsonBuilder& beginObject();
     JsonBuilder& beginObject(const std::string& name);
     JsonBuilder& endObject();
+    JsonBuilder& beginArray();
     JsonBuilder& beginArray(const std::string& name);
     JsonBuilder& endArray();
 
     JsonBuilder& addField(const std::string& value) {
-        return addFieldImpl('"' + std::string(value) + '"');
+        return addFieldImpl('"' + value + '"');
     }
 
     JsonBuilder& addField(const std::string& key, const std::string& value) {
-        return addFieldImpl(key, '"' + std::string(value) + '"');
+        return addFieldImpl(key, '"' + value + '"');
     }
 
     template <typename T>

@@ -69,6 +69,14 @@ JsonBuilder& JsonBuilder::beginArray(const std::string& name) {
     return *this;
 }
 
+JsonBuilder& JsonBuilder::beginArray() {
+    if (m_shouldInsertComma)
+        m_jsonStream << ',';
+    m_jsonStream << '[';
+    m_shouldInsertComma = false;
+    return *this;
+}
+
 JsonBuilder& JsonBuilder::endArray() {
     m_jsonStream << ']';
     m_shouldInsertComma = true;
