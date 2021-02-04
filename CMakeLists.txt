@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.10)
 project(krystal-overlord)
 
 set(SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
-set(GCC_COVERAGE_COMPILE_FLAGS "--coverage -O0 -g -fno-inline")
+set(GCC_COVERAGE_COMPILE_FLAGS "--coverage -O0")
 set(GCC_COVERAGE_LINK_FLAGS    "-lgcov")
 
 find_package(Threads)
