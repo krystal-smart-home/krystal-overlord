@@ -14,7 +14,7 @@ class TransmissionService : public core::Service {
 public:
     explicit TransmissionService(std::shared_ptr<net::ITcpSocket::Factory> socketFactory, int port = 7777)
         : core::Service("TransmissionService")
-        , m_serverSocket(std::make_unique<net::SocketProxy>(socketFactory->create(port))) {
+        , m_serverSocket(std::make_shared<net::SocketProxy>(socketFactory->create(port))) {
     }
 
     void start() override {
@@ -23,14 +23,14 @@ public:
     }
 
     void stop() override {
-		m_serverSocket->close();
-	}
+        m_serverSocket->close();
+    }
 
     core::ServiceState update(const xvent::EventProvider& eventProvider) override {
         return core::ServiceState::active;
     }
 
 private:
-    std::shared_ptr<net::SocketProxy> m_serverSocket;
+    std::shared_ptr<net::ITcpSocket> m_serverSocket;
 };
 }
