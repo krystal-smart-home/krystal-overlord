@@ -1,7 +1,8 @@
 #include "core/Service.h"
 
 #include "core/Thread.h"
-// #include "net/Socket.h"
+#include "net/SocketProxy.h"
+#include "net/TcpSocket.h"
 
 namespace krystal::transmission {
 
@@ -11,22 +12,25 @@ class TransmissionService : public core::Service {
     // clang-format on
 
 public:
-    explicit TransmissionService()
-        : core::Service("TransmissionService") {
+    explicit TransmissionService(std::shared_ptr<net::ITcpSocket::Factory> socketFactory, int port = 7777)
+        : core::Service("TransmissionService")
+        , m_serverSocket(std::make_unique<net::SocketProxy>(socketFactory->create(port))) {
     }
+
+    void start() override {
+        m_serverSocket->bind();
+        m_serverSocket->listen();
+    }
+
+    void stop() override {
+		m_serverSocket->close();
+	}
 
     core::ServiceState update(const xvent::EventProvider& eventProvider) override {
         return core::ServiceState::active;
     }
 
-    void start() override {
-        //     m_acceptor = std::make_unique<net::Socket>(8889);
-    }
-
-    void stop() override {
-    }
-
 private:
-    //   std::unique_ptr<net::ISocket> m_acceptor;
+    std::shared_ptr<net::SocketProxy> m_serverSocket;
 };
 }

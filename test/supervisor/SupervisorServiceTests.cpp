@@ -1,6 +1,6 @@
-#include <gtest/gtest.h>
-
 #include "supervisor/SupervisorService.h"
+
+#include <gtest/gtest.h>
 
 #include "mocks/EventProviderWrapper.hpp"
 
