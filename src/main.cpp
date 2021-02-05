@@ -1,10 +1,11 @@
 #include <iostream>
 
+#include "api/ApiService.h"
 #include "core/Logger.h"
 #include "core/ServiceManager.hpp"
+#include "core/Thread.h"
 #include "supervisor/SupervisorService.h"
-#include "transmission/TransmissionService.h"
-#include "api/ApiService.h"
+#include "transmission/TransmissionService.hpp"
 
 using namespace krystal;
 
@@ -15,12 +16,12 @@ int main() {
     krystal::core::ServiceManager serviceManager;
 
     auto supervisorService = std::make_shared<supervisor::SupervisorService>();
-    auto transmissionService = std::make_shared<transmission::TransmissionService>();
-	auto apiService = std::make_shared<api::ApiService>();
+    auto transmissionService = std::make_shared<transmission::TransmissionService<core::Thread>>();
+    auto apiService = std::make_shared<api::ApiService>();
 
     serviceManager.registerService(supervisorService);
     serviceManager.registerService(transmissionService);
-	serviceManager.registerService(apiService);
+    serviceManager.registerService(apiService);
 
     serviceManager.start();
 

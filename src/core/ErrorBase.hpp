@@ -2,6 +2,7 @@
 
 #include <exception>
 #include <typeindex>
+#include <sstream>
 
 #include "ErrorCode.h"
 

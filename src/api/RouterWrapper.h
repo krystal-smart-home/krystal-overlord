@@ -20,11 +20,11 @@ public:
     explicit RouterWrapper(Pistache::Rest::Router& router)
         : m_router(router) {}
 
-    void get(const std::string& url, Route::Handler&& handler) {
+    virtual void get(const std::string& url, Route::Handler&& handler) {
         Pistache::Rest::Routes::Get(m_router, url, handler);
     }
 
-    void post(const std::string& url, Route::Handler&& handler) {
+    virtual void post(const std::string& url, Route::Handler&& handler) {
         Pistache::Rest::Routes::Post(m_router, url, handler);
     }
 

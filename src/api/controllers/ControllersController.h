@@ -12,9 +12,6 @@ public:
         : m_eventEmitter(eventEmitter) {
     }
 
-
-	
-
 private:
     std::shared_ptr<xvent::EventEmitter> m_eventEmitter;
 };
