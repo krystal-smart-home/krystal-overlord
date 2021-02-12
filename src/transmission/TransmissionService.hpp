@@ -1,5 +1,6 @@
 #include "core/Service.h"
 
+#include "ConnectionManager.hpp"
 #include "core/Thread.h"
 #include "net/SocketProxy.h"
 #include "net/TcpSocket.h"
@@ -14,23 +15,22 @@ class TransmissionService : public core::Service {
 public:
     explicit TransmissionService(std::shared_ptr<net::ITcpSocket::Factory> socketFactory, int port = 7777)
         : core::Service("TransmissionService")
-        , m_serverSocket(std::make_shared<net::SocketProxy>(socketFactory->create(port))) {
+        , m_connectionManager(std::make_shared<ConnectionManager<Thread>>(socketFactory, m_eventEmitter->clone(), port)) {
     }
 
     void start() override {
-        m_serverSocket->bind();
-        m_serverSocket->listen();
+        m_connectionManager->startThreaded();
     }
 
     void stop() override {
-        m_serverSocket->close();
-    }
+		m_connectionManager->stop();
+	}
 
     core::ServiceState update(const xvent::EventProvider& eventProvider) override {
         return core::ServiceState::active;
     }
 
 private:
-    std::shared_ptr<net::ITcpSocket> m_serverSocket;
+    std::shared_ptr<ConnectionManager<Thread>> m_connectionManager;
 };
 }
