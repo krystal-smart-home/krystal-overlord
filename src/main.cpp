@@ -1,17 +1,19 @@
-#include <iostream>
+#include "core/Log.h"
+#include "service/ServiceManager.h"
 
-#include <boost/asio/spawn.hpp>
+#include "device/DeviceSession.h"
+
+using namespace krystal;
 
 int main() {
-    std::cout << "Hello world!\n";
+    core::initLogging();
+    KRYSTAL_INFO("Logger initialized.");
 
-    boost::asio::io_context asyncContext;
+    auto serviceThreadFactory = std::make_shared<service::ServiceThread::Factory>();
+    service::ServiceManager serviceManager { serviceThreadFactory };
 
-    boost::asio::spawn(asyncContext, [](boost::asio::yield_context yield) {
-        std::cout << "Hello world2!\n";
-    });
+    serviceManager.start();
 
-    asyncContext.run();
-
+    KRYSTAL_INFO("Finished, bye.");
     return 0;
 }
